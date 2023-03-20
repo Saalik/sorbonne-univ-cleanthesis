@@ -3,6 +3,8 @@
 \chapter{Introduction}
 \label{sec:intro}
 
+
+
 main intro part, in general it should contain at least 4 paragraphs each answers one of the following questions.
 
 \emph{P1: What's the thesis main problem?}
@@ -15,21 +17,119 @@ main intro part, in general it should contain at least 4 paragraphs each answers
 
 \section{Overview}
 \label{sec:intro:overview}
+An essential component of a database is its {backend}, in charge of
+recording the lowest level of data into a \emph{store}.
+Although conceptually simple at a high level, actual backends are
+complex, due to the demands for fast response, high volume, limited
+footprint, concurrency, distribution, reliability, and so on.
+For instance, the open-source RocksDB has 350k LOC, Redis is 160k LOC,
+and the AntidoteDB backend is 17k~LOC\@.
+% \cite{RocksDB*LOC*todo,Redis*LOC*todo,gingko*LOC*todo}.
+Any such complex software has bugs; database backend bugs are critical,
+possibly violating data integrity or security \cite{rocksdbbug}.
 
-In the first part of this thesis,
-we explore ...
 
-In the second part of the thesis,
-we present \system{},
-a ...
-To answer this challenge, \system{} takes a hybrid approach, and
-...
+Using verification tools has the potential to avoid such bugs, but,
+given the complexity of a modern backend, fully specifying all the
+moving pieces is a daunting task.
 
-To address the requirements of ..., \system{}
-enables ...
+This article reports an incremental approach to the rigorous and modular
+development of a backend.
+We first formalise the semantics of transactions above a versioned
+key-value store; this high-level specification helps to reason about
+correctness, both informally and with the Coq proof tool.
+Thanks to  explicit versioning, the state at any point in time is
+deterministic, and all implementations are behaviourally equivalent.
+We specify a map-based and a journal-based variant.
 
-Finally, this thesis addresses a number of design and implementation
-challenges, including ...
+Reading the specification as a kind of pseudocode, we implement it
+verbatim, without optimisation.
+More specifically, we implement a map-based and a journal-based store,
+both in memory and on disk.
+% Experimentally, as expected, the former has high performance but is
+% limited by memory size; the on-disk map is persistent (but not crash
+% tolerant) and IO-bound; the on-disk journal has high throughput but slow
+% response.
+
+Using them directly is impractical; features such as caching,
+write-ahead logging, checkpointing, journal truncation, etc., are
+required to improve performance.
+Our simplifying insight is that such features can be described and
+implemented by \emph{composing} instances of the basic variants.
+In particular, we show how to compose a write-ahead log and to bound
+storage footprint.
+% In particular, we show how to build layered storage (as in LSM Tree) and
+% to bound storage footprint.
+In future work, we believe the same approach can justify sharding,
+and geo-distribution.
+The formal rules for correct dynamic composition are particularly
+simple.
+
+% Our operational semantics specifies the rules for transactions under
+% 
+In the style of MVCC (multi-value concurrency control), a transaction
+reads from a causally-consistent snapshot.
+It terminates by either committing atomically, or by aborting without
+modifying the store.
+% Although this paper focuses on a highly-available transaction model
+% (convergent causal consistency or TCC+, a variant of PSI
+% \cite{rep:syn:1661}), our results generalise to stronger
+% models such as SI or strong serialisability.
+The transaction model appeals to a store's specialised
+book-keeping operations (called \doUpdate{}, \doCommit{} and \lookup{}),
+implicity assuming infinite memory and no failures.
+To bound a store's memory footprint, we restrict its domain.
+
+% Tools exist to compile a Coq specification to executable code
+% \cite{*coq-to-c*todo*}.
+% We did not take that path for pragmatic reasons, because it is too far
+% from the ordinary programmer's experience.
+% Instead, we manually transcribe the specification to
+% Java, verbatim, resisting the temptation to optimise. We check through 
+% testing that it behaves like the specification, and that
+% variants that were proved equivalent do have the same runtime behaviour.
+% We report on the implementation throughout the paper, and an
+% experimental evaluation in Section~\ref{sec:experiments}.
+
+This paper focuses on safety properties, and does not consider security
+issues.
+
+Our contributions can be summarised as follows:
+\begin{compactitem}
+\item
+  A formal model of a concurrent, transactional backend store, with
+  three variants: map- and journal-based, and compositional, and a model
+  for the correct composition of stores.
+\item
+  Interpreting the formal model in terms of system design and
+  implementation challenges; applying it to the implementation to
+  volatile and persistent maps, and a crash-tolerant journal.
+\item
+  Implementation by composition of a write-ahead log, with caching
+  and bounded storage footprint.
+\item
+  Experimental evaluation, testing for correctness and showing that our
+  rigorous approach does not preclude performance.
+\end{compactitem}
+
+% This paper progresses as follows.
+% After this introduction, Section~\ref{sec:system-model} formalises the
+% system model and semantics.
+% Section~\ref{sec:transaction-framework} contains our formal model of
+% transactions and their interaction with the store.
+% We explain how to interpret the model from a systems perspective in
+% Section~\ref{sec:correctness-challenges}.
+% Section~\ref{sec:basic} refines the model and presents the
+% implementation of two basic variants, a map-based and a journal store.
+% In Section~\ref{sec:composed-store-variant} we formalise a theory of 
+% store composition, which we apply to building a write-ahead log store in 
+% Section~\ref{sec:conductor}.
+% Section~\ref{sec:experiments} reports on our experimental evaluation and
+% lessons learned.
+% We study related art in Section~\ref{sec:related}, and conclude with
+% future work in Section~\ref{sec:conclusion}.
+
+
 
 \section{Contributions}
 \label{sec:intro:contributions}

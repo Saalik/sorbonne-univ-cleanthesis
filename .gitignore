@@ -287,3 +287,6 @@ TSWLatexianTemp*
 
 # bibtex aux files
 *.bbl
+
+# Mac OS X
+.DS_Store

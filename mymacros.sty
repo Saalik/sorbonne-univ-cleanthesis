@@ -1,0 +1,257 @@
+% -*-mode: latex; coding: utf-8-unix -*-
+
+% Basic notation
+\let\union=\cup
+\let\intersect=\cap
+\let\emptyset=\varnothing
+% obsolete
+% \let\lub=\sqcup \let\biglub=\bigsqcup
+% end obsolete
+\let\compose=\sqcup
+\let\bigcompose=\bigsqcup
+\let\storecompose=\otimes
+\let\append=\rhd
+\let\lepar=\leqq
+\let\gepar=\geqq
+
+\newcommand{\dom}[1]{\ensuremath{\mathsf{dom}}(#1)}
+\newcommand{\equaldef}{\ensuremath{\stackrel{\triangle}{=}}}
+\newcommand{\bottom}{\ensuremath{\bot}}
+% \newcommand{\vis}{\ensuremath{\prec}}
+\newcommand{\concur}{\ensuremath{\parallel}}
+\let\ifonlyif\Longleftrightarrow
+
+\newcommand*{\newmathit}[1]{%
+    \expandafter \@ifdefinable \csname #1\endcsname {%
+      \global \@namedef{#1}{\ensuremath{\mathit{#1}}\xspace}%
+    }%
+  }
+
+\newcommand*{\newmathsf}[1]{%
+    \expandafter \@ifdefinable \csname #1\endcsname {%
+      \global \@namedef{#1}{\ensuremath{\mathsf{#1}}\xspace}%
+    }%
+  }
+
+\newcommand*{\newmathittwo}[2]{%
+    \expandafter \@ifdefinable \csname #1\endcsname {%
+      \global \@namedef{#1}{\ensuremath{\mathit{#2}}\xspace}%
+    }%
+  }
+  
+  \newcommand*{\newrule}[2]{%
+    \expandafter \@ifdefinable \csname #1\endcsname {%
+      \global \@namedef{#1}{\ensuremath{\textsc{#2}}\xspace}%
+    }%
+  }
+
+\newmathsf{merge}
+
+\newmathit{abort}
+\newmathit{cache}
+\newmathit{checkpoint}
+% \newmathit{commit}
+% \newmathit{ct}
+% \newmathit{dt}
+\newmathit{effect}
+% \newmathit{evict}
+\newmathit{key}
+\newmathit{Id}
+% \newmathit{lookup}
+% \newmathit{maxt}
+% \newmathit{mint}
+% \newmathit{nil}
+% \newmathit{now}
+% \newmathit{update}
+\newmathit{val}
+
+% \newcommand{\zerovector}{\ensuremath{\overrightarrow{0}}}
+
+% \newmathittwo{starttxn}{begin\_txn}
+% \newmathittwo{termtxn}{end\_transaction}
+% \newmathittwo{hiwater}{high\_watermark}
+% \newmathittwo{lowater}{low\_watermark}
+% \newmathittwo{putcmd}{put}
+% \newmathittwo{readcmd}{read}
+\newmathittwo{lowhistory}{low\_history}
+\newmathittwo{lowlookup}{low\_lookup}
+\newmathittwo{highlookup}{high\_lookup}
+% Abbreviations
+\newmathit{LH}
+\newmathit{LL}
+\newmathit{HL}
+
+% object-version
+\newcommand{\aobjversion}[2]{\ensuremath{\mathit{st}(#1,#2)}}
+
+% Transaction semantic rules
+\newrule{starttxnrule}{Begin\_Txn}
+\newrule{initkeyrule}{Init\_Key}
+\newrule{readrule}{Read}
+\newrule{updaterule}{Update}
+\newrule{abortrule}{Abort}
+\newrule{commitrule}{Commit}
+% \newrule{steprule}{Step}
+% \newrule{txniternalrule}{Transaction\_Internal}
+% \newrule{commiteffectrule}{Commit\_Effect}
+
+% formal notations
+% key, value
+\newcommand{\Keytype}{\ensuremath{\mathit{Key}}}
+\newcommand{\akey}[1][]{\ensuremath{k_{#1}}}
+\newcommand{\akeyset}[1][]{\ensuremath{K_{#1}}}
+\newcommand{\Valuetype}{\ensuremath{\mathit{Value}}}
+\newcommand{\aval}[1][]{\ensuremath{v_{#1}}}
+% obsolete, remove: \avalset
+% \newcommand{\avalset}{\ensuremath{V}}
+
+% Store, state
+\newcommand{\Storetype}{\ensuremath{\Sigma}}
+\newcommand{\astore}[1][]{\ensuremath{\sigma_{#1}}}
+\newcommand{\astate}[1][\astore]{\ensuremath{(#1, \afield[\astore], \atrseta, \atrsetc, \atrsetr) }}
+\newcommand{\bstate}[5][\astore]{\ensuremath{(#1, #2, #3, #4, #5)}}
+% \newcommand{\bstatelb}[5][\astore]{\ensuremath{(#1, #2, #3, #4, #5)}}
+% \newcommand{\gstate}[1][]{\ensuremath{(\astore^{#1}, \atrseta^{#1},\atrsetc^{#1}, \atrsetr^{#1})}}
+% \newcommand{\acache}[1][]{\ensuremath{\omega_{#1}}}
+\newcommand{\safe}[3]{\ensuremath{\mathsf{safe}}(#1,#2,#3)}
+\newcommand{\safename}{\ensuremath{\mathsf{safe}}}
+
+% Transactions: running, aborted, committed
+\newcommand{\atrset}[1][]{\ensuremath{\mathcal{T}_{#1}}}
+\newcommand{\atrseta}{\ensuremath{\atrset[\text{a}]}} % aborted transactions
+\newcommand{\atrsetc}{\ensuremath{\atrset[\text{c}]}} % committed transactions
+\newcommand{\atrsetr}{\ensuremath{\atrset[\text{r}]}} % running transactions
+
+% Transaction ID
+\newcommand{\TransactionIDtype}[1][i]{\ensuremath{{\mathcal{T}_{ID}}}}
+\newcommand{\atrans}{\ensuremath{{\tau}}}
+\newcommand{\btrans}[2][i]{\ensuremath{{\tau}_{#1}^{#2}}}
+% Timestamps: dependency, commit
+\newcommand{\now}{\ensuremath{\mathit{now}()}}
+\newcommand{\Timestamptype}{\ensuremath{\mathtt{TS}}}
+\newcommand{\asnpsht}[1][]{\ensuremath{{\mathtt{dt}}_{#1}}}
+\newcommand{\acomstp}[1][]{\ensuremath{{\mathtt{ct}}_{#1}}}
+% \newcommand{\infts}[1][]{\ensuremath{{\mathtt{lb}}_{#1}}}
+% \newcommand{\supts}[1][]{\ensuremath{{\mathtt{up}}_{#1}}}
+\newcommand{\atmstp}[1][]{\ensuremath{\mathtt{t}_{#1}}}
+\newcommand{\atmstpset}[1][]{\ensuremath{T_{#1}}}
+
+% State buffer
+\newcommand{\Statebuftype}{\ensuremath{\mathit{Sbuf}}}
+\newcommand{\empeffbuf}{\ensuremath{\emptyset}}
+\newcommand{\astatebuf}{\ensuremath{\mathcal{B}}}
+% Effect buffer
+% \newcommand{\aeffbuf}{\ensuremath{\mathcal{E}}}
+% \newcommand{\Effbuftype}{\ensuremath{\mathit{Ebuf}}}
+% Read-set
+\newcommand{\areadset}{\ensuremath{\mathcal{R}}}
+% Dirty-set
+\newcommand{\adirtyset}{\ensuremath{\mathcal{W}}}
+% \newcommand{\Dirtysettype}{\ensuremath{\mathcal{P}(\Keytype)}}
+
+% Effects
+\newcommand{\Effecttype}{\ensuremath{\mathcal{E}\!\!f\!\!f}}
+\newcommand{\Assigntype}{\ensuremath{\mathcal{A}\!s\!s}}
+\newcommand{\aeffect}[1][]{\ensuremath{\delta_{#1}}}
+\newcommand{\aincr}[2][1]{\ensuremath{\mathsf{incr}_{#1}(#2)}}
+
+\newcommand{\aassign}[1][]{\ensuremath{\coloneq{#1}}}
+\newcommand{\beffect}[2][]{\ensuremath{\delta_{#1}(#2)}}
+\newcommand{\aeffectset}{\ensuremath{\mathcal{E}}}
+% \newcommand{\Tseffectsettype}{\ensuremath{\Effecttype}Set}
+% \newcommand{\Tracetype}{\ensuremath{\Effecttype}Set}
+\newcommand{\atseffectset}{\ensuremath{\Theta}}
+\newcommand{\teffect}[2]{\ensuremath{\delta_{#1}^{#2}}}
+\newcommand{\Teffecttype}{\ensuremath{\mathcal{T\!E}\!\!f\!\!f}}
+
+% obsolete: effect sequence
+% \newcommand{\aeffseq}{\ensuremath{\ell}}
+
+
+
+% Transaction descriptor: the tuple ( transaction-ID, dependency
+% timestamp, read set, dirty set, state buffer, commit timestamp )
+\newcommand{\Tdesctype}{\ensuremath{{\mathcal{T}_{\mathit{DESC}}}}}
+
+% obsolete
+% \newcommand{\areadset}{\ensuremath{\mathcal{R}}}
+
+% commit/abort preconditions
+% \newcommand{\cmbegin}{\ensuremath{\mathcal{CM}_{\text{begin}}}}
+\newcommand{\cccommit}{\ensuremath{\mathcal{CC}}}
+% \newcommand{\consistencyBegin}[5][\asnpsht]{
+%   \ensuremath{\cmbegin(#1, #2, #3, #4, #5)}}
+% [name]{\atrans}{\asnpsht}{\areadset}{\adirtyset}{\astatebuf}{\acomtsp}
+\newcommand{\CCCommit}[8][]{\ensuremath{\cccommit_{#1} (#2, #3, #4,
+    #5, #6, #7, #8)}}
+
+% Replicated data types [Burckhardt's book 2014]
+% \newcommand{\ardt}[1][]{\ensuremath{\mathcal{F}_{#1}}}
+% \newcommand{\brdt}[3][]{\ensuremath{\mathcal{F}_{#1}(#2,#3)}}
+
+% \newcommand{\acmd}{\ensuremath{c}}
+% \newcommand{\Commands}{\ensuremath{\text{Commands}}}
+\newcommand{\cmdBeTr}[1][\asnpsht]{\ensuremath{\mathsf{begin}(#1)}}
+\newcommand{\jrnlBeginTag}{\ensuremath{\mathsf{begin}}}
+
+\newcommand{\cmdLookup}[3]{\ensuremath{\mathsf{lookup}(#1,#2,#3)}}
+\newcommand{\lookup}{\ensuremath{\mathsf{lookup}}}
+
+\newcommand{\cmdRead}[2][\atrans]{\ensuremath{\mathsf{read}_{#1}(#2)}}
+
+\newcommand{\cmdUpdateTag}{\ensuremath{\mathsf{update}}}
+\newcommand{\cmdUpdate}[3]{\ensuremath{\cmdUpdateTag(#1, #2, #3)}}
+\newcommand{\cmdDoUpdateTag}{\ensuremath{\mathsf{doUpdate}}}
+\newcommand{\cmdDoUpdate}[4]{\ensuremath{\cmdDoUpdateTag(#1,#2,#3,#4)}}
+\newcommand{\doUpdate}{\ensuremath{\mathsf{doUpdate}}}
+\newcommand{\jrnlUpdateTag}{\ensuremath{\mathsf{update}}}
+\newcommand{\jrnlUpdateRecord}[3][\atrans]{\ensuremath{(\jrnlUpdateTag{},
+    #1, #2, #3)}}
+
+\newcommand{\cmdAbort}[1][\atrans]{\ensuremath{\mathsf{abort}_{#1}}}
+
+\newcommand{\cmdDoCommit}[6]{\ensuremath{\mathsf{doCommit}(#1,#2,#3,#4,#5,#6)}}
+\newcommand{\doCommit}{\ensuremath{\mathsf{doCommit}}}
+\newcommand{\jrnlCommitTag}[2][\atrans]{\ensuremath{\mathsf{commit}}}
+\newcommand{\jrnlCommitRecord}[2][\atrans]{\ensuremath{(\jrnlCommitTag{},
+    #1, #2)}}
+
+\newcommand{\cmdCommitTag}[2][\atrans]{\ensuremath{\mathsf{commit}}}
+\newcommand{\cmdCommit}[2][\atrans]{\ensuremath{\cmdCommitTag_{#1}(#2)}}
+% \newcommand{\cmdCommit}[4][]{\ensuremath{\mathsf{commit}_{#1}(#2,#3,#4)}}
+\newcommand{\commit}{\ensuremath{\mathsf{commit}}}
+
+\newcommand{\jrnlAbortTag}[2][\atrans]{\ensuremath{\mathsf{abort}}}
+
+
+% \newcommand{\ajournal}[1][]{\ensuremath{\gamma_{#1}}}
+
+% Store composition semantics
+\newrule{addminirule}{Add\_Ministore}
+\newrule{rmvminirule}{Remove\_Ministore}
+
+% Store composition
+\newcommand{\abigstore}[1][]{\ensuremath{\mathcal{S}_{#1}}}
+\newcommand{\adomain}[1][]{\ensuremath{\mathcal{D}_{#1}}}
+\newcommand{\afield}[1][]{\ensuremath{\mathcal{F}_{#1}}}
+\newcommand{\addmini}{\ensuremath{\mathsf{addmini}}}
+\newcommand{\cmdAddMini}[4]{\ensuremath{\mathsf{addmini}(#1,#2,#3,#4)}}
+\newcommand{\rmvmini}{\ensuremath{\mathsf{rmvmini}}}
+\newcommand{\cmdRmvMini}[4]{\ensuremath{\mathsf{rmvmini}(#1,#2,#3,#4)}}
+
+% Bounded store
+\newcommand{\asegmentstore}[4]{\ensuremath{\mathit{#1}{:}#2{:}(#3,#4]}}
+
+% timestamp server
+\newcommand{\minallowedct}{\ensuremath{\mathit{min\_allowed\_ct}}}
+\newcommand{\maxalloweddt}{\ensuremath{\mathit{max\_allowed\_dt}}}
+
+
+%% Local Variables:
+%% mode: latex
+%% coding: utf-8
+%% ispell-local-dictionary: "en_GB"
+%% mode: flyspell
+%% TeX-master: "main" 
+%% my-latex-bibfile: "~/svnbackup/bib/shapiro-bib-ext.bib"
+%% End:
