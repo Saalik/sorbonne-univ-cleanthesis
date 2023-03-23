@@ -1,0 +1,50 @@
+% -*-mode: latex; coding: utf-8-unix -*-
+
+    \[
+    \inferrule[\addminirule]
+    {
+      \astore = \{ \astore[1], \astore[2], \ldots{} \}
+      \\
+      \adomain[\astore] = \adomain[{\astore[1]}] \union \adomain[{\astore[2]}] \union \ldots{}
+      \\
+      \forall (\akey,\atmstp) \in \adomain[{\astore[0]}] \intersect
+      \adomain[\astore]:
+      \cmdLookup{\astore[0]}{\akey}{\atmstp} = \cmdLookup{\astore}{\akey}{\atmstp}
+      \\
+      \astore' = \astore \union \astore[0]
+      \\
+      \adomain[\astore'] = \adomain[\astore] \union \adomain[{\astore[0]}]
+    }
+    {(\astore, \adomain[\astore])
+      \xrightarrow[]{\cmdAddMini{\astore}{\adomain[\astore]}{\astore[0]}{\adomain[{\astore[0]}]}}
+      (\astore', \adomain[\astore'])
+    }
+  \]
+
+  \[
+    \inferrule[\toprmvminirule]
+     {
+      \astore = \{ \astore[0], \astore[1], \astore[2], \ldots{} \}
+      \\
+      \adomain[\astore] = \adomain[{\astore[0]}] \union \adomain[{\astore[1]}] \union \adomain[{\astore[2]}] \union \ldots{}
+      \\
+      \astore' = \astore \setminus \astore[0]
+      \\
+      \adomain[\astore'] = \adomain[{\astore[1]}] \union \adomain[{\astore[2]}] \union \ldots{}
+    }
+    {(\astore, \adomain)
+      \xrightarrow[]{\cmdRmvMini{\astore}{\adomain[\astore]}{\astore[0]}{\adomain[{\astore[0]}]}}
+      (\astore', \adomain[\astore'])
+    }
+  \]
+
+
+
+%% Local Variables:
+%% mode: latex
+%% coding: utf-8
+%% ispell-local-dictionary: "en_GB"
+%% mode: flyspell
+%% TeX-master: "main" 
+%% my-latex-bibfile: "~/svnbackup/bib/shapiro-bib-ext.bib"
+%% End:

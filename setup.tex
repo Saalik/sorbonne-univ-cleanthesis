@@ -60,6 +60,21 @@
 \usepackage{scrhack}
 \usepackage{listings}
 \usepackage{tikz}
+
+% **************************************************
+% My packages
+% **************************************************
+
+\usepackage{mymacros}
+\usepackage{xcolor}  %% Use of color
+\usepackage{xspace}  %% Macros with automatic spacing
+\usepackage[]{todonotes}
+% \usepackage{algpseudocode}
+\usepackage{mathpartir} % Formatting inference rules
+\usepackage{graphicx}  %% Graphics
+\usepackage{mathtools} % Math tools
+\usepackage{microtype} % Fine control of character spacing (load after babel, inputenc, and font-changing packages)
+
 \usetikzlibrary{shapes.misc, shapes.geometric, positioning, arrows.meta, calc, arrows}
 %\usepackage{xcolor}
 % I'm not using glossaries, so I commented both next lines
@@ -251,3 +266,9 @@
 \renewcommand{\arraystretch}{1.2} % fat table
 
 \newcommand{\bfemph}[1]{\textbf{\textit{#1}}}
+
+\newcommand{\commentaire}[2][fromWhom?]{%
+  {%
+    \color{magenta}{\bfseries\sffamily\scriptsize$\triangleright$(#1:) #2$\triangleleft$}%
+  }}
+% \newcommand{\commentaire}[2][fromWhom?]{}

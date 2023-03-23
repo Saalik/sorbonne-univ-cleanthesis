@@ -1,0 +1,34 @@
+\[
+  \begin{array}{rcl}
+    \cmdLookup{\{\astore[1], \astore[2] \}}{\akey}{\asnpsht}
+    & = &
+          \cmdLookup{\astore[1]}{\akey}{\asnpsht}
+          \compose
+          \cmdLookup{\astore[2]}{\akey}{\asnpsht}
+    \\
+% ~&~&~\\
+    \cmdDoUpdate{\{\astore[1], \astore[2] \}}{\atrans}{\akey}{\aeffect}
+    & = &
+          \cmdDoUpdate{\astore[1]}{\atrans}{\akey}{\aeffect}
+          \parallel{}
+          \cmdDoUpdate{\astore[2]}{\atrans}{\akey}{\aeffect}
+    \\
+% ~&~&~\\
+\cmdDoCommit{\{\astore[1], \astore[2] \}}{\atrans}{\areadset}{\adirtyset}{\astatebuf}{\acomstp}
+& = & 
+      \cmdDoCommit{\astore[1]}{\atrans}{\areadset}{\adirtyset}{\astatebuf}{\acomstp}
+      \parallel{}
+      \cmdDoCommit{\astore[2]}{\atrans}{\areadset}{\adirtyset}{\astatebuf}{\acomstp}
+    \\
+\end{array}
+\]
+
+
+%% Local Variables:
+%% mode: latex
+%% coding: utf-8
+%% ispell-local-dictionary: "en_GB"
+%% mode: flyspell
+%% TeX-master: "main" 
+%% my-latex-bibfile: "~/svnbackup/bib/shapiro-bib-ext.bib"
+%% End:

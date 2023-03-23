@@ -1,0 +1,42 @@
+% -*-mode: latex; coding: utf-8-unix -*-
+
+\[
+  \begin{array}{rcl}
+    \cmdLookup{\astore}{\akey}{\asnpsht}
+    & = &
+      \begin{cases}
+        \text{as in Fig.~\ref{fig:map-store-semantics} or~\ref{fig:journal-store-semantics}}
+             & \text{if}\ (\akey, \atmstp) \in \adomain[\astore] \\
+        \bottom & \text{otherwise} \\
+      \end{cases}
+    \\
+    % 
+    \cmdDoUpdate{\astore}{\atrans}{\akey}{\aeffect}
+    & = & 
+      \begin{cases}
+        \text{as in Fig.~\ref{fig:map-store-semantics} or~\ref{fig:journal-store-semantics}}
+             & \text{if}\ (\akey, \atmstp) \in \adomain[\astore] \\
+        \astore & \text{otherwise} \\
+      \end{cases}
+    \\
+    %
+    \cmdDoCommit{\astore}{\atrans}{\areadset}{\adirtyset}{\astatebuf}{\acomstp}
+    & = & 
+      \begin{cases}
+        \text{as in Fig.~\ref{fig:map-store-semantics} or~\ref{fig:journal-store-semantics}}
+             & \text{if}\ (\akey, \atmstp) \in \adomain[\astore] \\
+        \astore & \text{otherwise} \\
+      \end{cases}
+    \\
+  \end{array}
+\]
+
+
+%% Local Variables:
+%% mode: latex
+%% coding: utf-8
+%% ispell-local-dictionary: "en_GB"
+%% mode: flyspell
+%% TeX-master: "../main.tex" 
+%% my-latex-bibfile: "~/svnbackup/bib/shapiro-bib-ext.bib"
+%% End:

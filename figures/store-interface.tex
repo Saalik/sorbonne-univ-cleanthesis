@@ -1,0 +1,32 @@
+% -*-mode: latex; coding: utf-8-unix -*-
+
+\[
+  \begin{array}{rcl}
+    \lookup{}   & : & \Storetype
+                      \times \Keytype
+                      \times \Timestamptype 
+                      \rightarrow \Effecttype_{\bottom}\\
+    \doUpdate{} & : & \Storetype
+                      \times \TransactionIDtype
+                      \times \Keytype
+                      \times \Effecttype 
+                      \rightarrow \Storetype \\
+    \doCommit{} & : & \Storetype
+                      \times \TransactionIDtype
+                      \times \mathcal{P}(\Keytype)
+                      \times \mathcal{P}(\Keytype)
+                      \times \Statebuftype
+                      \times \Timestamptype
+                      \rightarrow \Storetype\\
+  \end{array}
+\]
+
+
+%% Local Variables:
+%% mode: latex
+%% coding: utf-8
+%% ispell-local-dictionary: "en_GB"
+%% mode: flyspell
+%% TeX-master: "main" 
+%% my-latex-bibfile: "~/svnbackup/bib/shapiro-bib-ext.bib"
+%% End:

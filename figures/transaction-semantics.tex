@@ -1,0 +1,143 @@
+% -*-mode: latex; coding: utf-8-unix -*-
+    \[
+      \inferrule[\starttxnrule]
+      {
+        \atrans \notin \Pi_{\atrans}(\atrseta \cup \atrsetc \cup \atrsetr)
+        \\
+        % \consistencyBegin{\astore}{\atrseta}{\atrsetc}{\atrsetr\ }
+        % \\
+        \\
+        % Visibility clause: must not depend on a transaction that will
+        % commit in the future
+        \forall t \in \Pi_{\acomstp}(\atrsetr): t \not< \asnpsht
+        \\
+        % \atrsetr' = \atrsetr\ \cup\ \{(\atrans, \asnpsht, \empeffbuf, \emptyset, +\infty)\}
+      }
+      {
+        \astate \xrightarrow[\atrans]{\cmdBeTr}
+        \bstate{\afield[\astore]}{\atrseta}{\atrsetc}{\atrsetr'}
+      }
+  \]
+
+  \[
+    \inferrule[\initkeyrule]
+    {
+      \atrsetr = \atrsetr'' \cup \{(\atrans, \asnpsht, \areadset, \adirtyset, \astatebuf, +\infty)\}
+      \\
+      \akey \notin {\areadset}
+      \\
+      \cmdLookup{\astore}{\akey}{\asnpsht} = \aeffect
+      \\
+      \areadset' = \areadset \union \{ \akey \}
+      \\
+      \astatebuf' = \astatebuf [\akey \leftarrow \aeffect ]
+      \\
+      \atrsetr' = \atrsetr''
+      \cup \{(\atrans, \asnpsht, \areadset', \adirtyset, \astatebuf', +\infty)\}
+    }
+    {
+      \astate \xrightarrow[\atrans]{}
+      \bstate{\afield[\astore]}{\atrseta}{\atrsetc}{\atrsetr'}
+    }
+  \]
+
+  % \commentaire[Marc 2023-02-08]{Somewhere, add the constraint that
+  %   \aeffect{} above must resolve to a \Valuetype{} in the top-level composed
+  %   store.}
+  
+  \[
+    \inferrule[\readrule]
+    {
+      \atrsetr = \atrsetr'' \cup \{(\atrans, \asnpsht, \areadset, \adirtyset, \astatebuf, +\infty)\}
+      \\
+      \akey \in {\areadset}
+      \\
+      \astatebuf(\akey) = \aval
+    }
+    {
+      \astate \xrightarrow[\atrans]{\cmdRead{\akey} \rightarrow \{\aval\}}
+      \astate
+    }
+  \]
+
+  \[
+    \inferrule[\updaterule]
+    {
+      \atrsetr = \atrsetr''
+        \cup \{(\atrans, \asnpsht, \areadset, \adirtyset, \astatebuf, +\infty)\}
+      \\
+        \akey \in \areadset
+      \\
+        \astore' = \cmdDoUpdate{\astore}{\atrans}{\akey}{\aeffect}
+        \\
+        \adirtyset' = \adirtyset{} \union \akey
+        \\
+        \astatebuf' = \astatebuf{}[\akey \leftarrow \aeffect{}
+        (\astatebuf(k))]
+        \\
+      \atrsetr' = \atrsetr''
+        \cup \{(\atrans, \asnpsht, \areadset,
+               \adirtyset',
+               \astatebuf',
+               +\infty)\}
+    }
+    {
+      \astate \xrightarrow[\atrans]{\cmdUpdate{\atrans}{\akey}{\aeffect}}
+      \bstate[\astore']{\afield[\astore]}{\atrseta}{\atrsetc}{\atrsetr'}
+    }
+  \]
+
+  \[
+    \inferrule[\abortrule]
+    {
+      \atrsetr = \atrsetr'
+      \cup \{(\atrans, \asnpsht, \areadset, \adirtyset, \astatebuf, +\infty)\}
+      \\
+      \atrseta' = \atrseta
+      \cup \{(\atrans, \asnpsht, \areadset, \adirtyset, \astatebuf, +\infty)\}
+    }
+    {
+      \astate \xrightarrow[\atrans]{\cmdAbort}
+      \bstate{\afield[\astore]}{\atrseta'}{\atrsetc}{\atrsetr'}
+    }
+  \]  
+
+
+  \[
+    \inferrule[\commitrule]
+    {
+      \atrsetr = \atrsetr'
+      \cup \{(\atrans, \asnpsht, \areadset, \adirtyset, \astatebuf, +\infty)\}
+      \\
+      \acomstp \notin \Pi_{\acomstp}(\atrsetc)
+      \\
+      \asnpsht \le \acomstp
+      \\
+      % Visibility clause: must not commit after a dependent transaction
+      % started = *Crucial For Correctness*!!!
+      % Moved to BEGIN_TRANSACTION
+      % \forall \atmstp \in \Pi_{\asnpsht}(\atrsetc \union \atrsetr):
+      %     \acomstp \not< \atmstp %%% CRUCIAL
+      % \\
+      % \CCCommit[]{\astore}{\atrsetc}{\acomstp}{\areadset}{\adirtyset}{\astatebuf}{\atrsetc}
+      % \\
+      \astore' = \cmdDoCommit{\astore}{\atrans}{\areadset}{\adirtyset}{\astatebuf}{\acomstp}
+      \\
+      \atrsetc' = \atrsetc
+      \cup \{(\atrans, \asnpsht, \areadset, \adirtyset, \astatebuf, \acomstp)\}
+    }
+    {
+      \astate \xrightarrow[\atrans]{\cmdCommit{\acomstp}}
+      \bstate[\astore']{\afield[\astore]}{\atrseta}{\atrsetc'}{\atrsetr'}
+    }
+  \]
+
+
+%% Local Variables:
+%% mode: latex
+%% coding: utf-8
+%% ispell-local-dictionary: "en_GB"
+%% mode: flyspell
+%% TeX-master: "main" 
+%% my-latex-bibfile: "~/svnbackup/bib/shapiro-bib-ext.bib"
+%% End:

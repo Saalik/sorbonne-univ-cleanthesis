@@ -1,0 +1,65 @@
+% -*-mode: latex; coding: utf-8-unix -*-
+
+%%% SYSTOR: only assignments
+
+  \[
+ \begin{array}{rcl}   
+   \cmdLookup{\astore}{\akey}{\asnpsht} & = &
+%     \begin{cases}
+      \max_{\vis} \big( \mathsf{committed\_before}(\astore,
+       \akey, \asnpsht) \big)
+%         & \text{if}\ (\akey, \atmstp) \in \akeyset \times \atmstpset\\
+%       \bottom & \text{otherwise}\\
+%     \end{cases}
+   \\
+   % 
+    \cmdDoUpdate{\astore}{\atrans}{\akey}{\aeffect} & = &
+%        \begin{cases}
+          \astore\ \append\ \jrnlUpdateRecord[\atrans]{\akey}{\aeffect}
+%          &  \text{if}\ (\akey, \atmstp) \in \akeyset \times
+%            \atmstpset\\
+%          \mathsf{skip}\ & \text{otherwise} \\
+%        \end{cases}
+   \\
+   % 
+   \cmdDoCommit{\astore}{\atrans}{\_}{\_}{\_}{\acomstp}
+                       & = & \astore\ \append\ 
+                             \jrnlCommitRecord[\atrans]{\acomstp}
+   \\
+  \end{array}
+\]
+%
+\begin{minipage}{1.0\columnwidth}
+  with the following notation:
+  \begin{inparaenum}
+  \item 
+    $\append$ represents concatenation;
+  \item
+    `\jrnlUpdateTag{}' and `\jrnlCommitTag{}' are tags to distinguish the type
+    of a journal record.
+  \item
+    $\mathsf{committed\_before}(\astore, \akey, \asnpsht)$ denotes the
+    subsequence of journal \astore{}, of records tagged with key
+    \akey{}, that have a commit timestamp less or equal to \asnpsht{};
+    formally:
+    $\mathsf{committed\_before}(\astore, \akey, \asnpsht) \equaldef
+      \{(\aeffect, \atmstp)\ |\ \astore =
+        \astore[0]\
+        \append\ \jrnlUpdateRecord[\atrans]{\akey}{\aeffect}\
+        \append\ \astore[1]\ \append\
+        \jrnlCommitRecord{\atmstp}\
+        \append\ \astore[2]\
+        \text{and}\ \atmstp < \asnpsht \}
+    $
+
+\end{inparaenum}
+\end{minipage}
+
+%% Local Variables:
+%% mode: latex
+%% coding: utf-8
+%% ispell-local-dictionary: "en_GB"
+%% mode: flyspell
+%% TeX-master: "../main.tex" 
+%% my-latex-bibfile: "~/svnbackup/bib/shapiro-bib-ext.bib"
+%% End:

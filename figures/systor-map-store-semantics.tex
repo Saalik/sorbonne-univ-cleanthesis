@@ -1,0 +1,37 @@
+% -*-mode: latex; coding: utf-8-unix -*-
+
+\[
+  \begin{array}{rcl}
+    \cmdLookup{\astore}{\akey}{\asnpsht} & = &
+%      \begin{cases}
+        \max_{\vis} \{ \astore(\akey, t) : {t < \asnpsht} \}
+%             & \text{if}\ (\akey, \atmstp) \in \akeyset \times \atmstpset\\
+%        \bottom & \text{otherwise} \\
+%      \end{cases}
+    \\
+    % 
+    \cmdDoUpdate{\astore}{\_}{\_}{\_}    & = & \astore
+    \\
+    %
+    \cmdDoCommit{\astore}{\_}{\_}{\adirtyset}{\astatebuf}{\acomstp}(\akey)
+    & = & 
+      \begin{cases}
+         \astore(\akey) \union \{(\astatebuf(\akey), \acomstp)\} 
+            & \text{if}\ \akey \in \adirtyset
+            % \land (\akey, \atmstp) \in \akeyset \times \atmstpset
+        \\
+         \astore(\akey) & \text{otherwise}
+       \end{cases}
+    \\
+  \end{array}
+\]
+%
+
+%% Local Variables:
+%% mode: latex
+%% coding: utf-8
+%% ispell-local-dictionary: "en_GB"
+%% mode: flyspell
+%% TeX-master: "../main.tex" 
+%% my-latex-bibfile: "~/svnbackup/bib/shapiro-bib-ext.bib"
+%% End:

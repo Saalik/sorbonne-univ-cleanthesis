@@ -1,0 +1,19 @@
+  \newcommand{\OCL}[1]{\multicolumn{1}{l}{\ensuremath{#1 =}}}
+  \newcommand{\OCR}[1]{\multicolumn{1}{r}{\ensuremath{#1}}}
+\begin{tabular}[t]{@{}p{\columnwidth}@{}}
+\OCL{\cmdLookup{\{\astore[1], \astore[2] \}}{\akey}{\asnpsht}}\\
+\OCR{\max_{<} \{ \cmdLookup{\astore[1]}{\akey}{\asnpsht}, \cmdLookup{\astore[2]}{\akey}{\asnpsht} \}} \\
+\OCL{\cmdDoUpdate{\{\astore[1], \astore[2] \}}{\atrans}{\akey}{\aeffect}}\\
+\OCR{\cmdDoUpdate{\astore[1]}{\atrans}{\akey}{\aeffect} \parallel{} \cmdDoUpdate{\astore[2]}{\atrans}{\akey}{\aeffect}} \\
+\OCL{\cmdDoCommit{\{\astore[1], \astore[2] \}}{\atrans}{\areadset}{\adirtyset}{\astatebuf}{\acomstp}} \\
+\OCR{\cmdDoCommit{\astore[1]}{\atrans}{\areadset}{\adirtyset}{\astatebuf}{\acomstp} \parallel{} \cmdDoCommit{\astore[2]}{\atrans}{\areadset}{\adirtyset}{\astatebuf}{\acomstp}} \\
+\end{tabular}
+
+%% Local Variables:
+%% mode: latex
+%% coding: utf-8
+%% ispell-local-dictionary: "en_GB"
+%% mode: flyspell
+%% TeX-master: "main" 
+%% my-latex-bibfile: "~/svnbackup/bib/shapiro-bib-ext.bib"
+%% End:

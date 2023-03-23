@@ -1,0 +1,50 @@
+% -*-mode: latex; coding: utf-8-unix -*-
+
+%%% SYSTOR paper: removing unused notations
+
+\begin{tabular}[t]{ccl}
+   \akey, \atmstp, \aval     & $\in \Keytype, \in \Timestamptype, \in \Valuetype$                                     & Primitive Key, Timestamp, Value                   \\
+   \aeffect[]                       & $\in \Effecttype = \_ \rightarrow \Valuetype$                                   & Effect (assignment) \\
+   % \aassign[\aval] or \aval{}       & $\in \Assigntype \subset \Effecttype$                                           & Assignment                             \\
+   \bottom                          & $\notin \Effecttype$                                                            & Absence of effect                      \\
+   % \Id                              & $\in \Effecttype$                                                               & Identity effect (no-op)                \\
+%  $\teffect{\akey}{\atmstp}$         & $\in \Teffecttype = \Effecttype \times \Keytype \times \Timestamptype$         & Effect to key \akey{} with commit timestamp \atmstp{}\\
+  $\aeffect[1] \vis \aeffect[2]$      &                                                                                & \aeffect[1] visible to $\aeffect[2]$ \\
+  \astore                          & $\in \Storetype = \Keytype \times \Timestamptype \rightarrow \Effecttype_{\bottom}$& Store: maps key, timestamp to effect \\
+  $\afield = (\lowhistory,\adomain)$& $\in \Timestamptype \times 2^{\Keytype \times \Timestamptype}$                       & Field of store; \adomain = domain \\
+  \{ \astore[1], \astore[2], \ldots{} \}&                                                                             & Composition of stores                 \\
+%  \atseffectset                    & $\in (\Teffecttype, \vis)$                                                      & Trace \\ % was Tseffectsettype =
+%  \aeffseq                         & $\in \mathsf{List}[\Effecttype]$                                                & Effect sequence                       \\
+  \hline{}
+  \atrans                           & $\in \TransactionIDtype$                                                        & Transaction identifier                \\
+  \asnpsht                          & $\in \Timestamptype$                                                            & Dependency timestamp (of transaction) \\
+  \areadset                         & $\in \mathcal{P}(\Keytype)$                                                     & Read set = set of keys read in transaction \\
+  \adirtyset                        & $\in \mathcal{P}(\Keytype)$                                                     & Dirty set = set of keys modified in transaction \\
+  \astatebuf                        & $\in \Statebuftype = \Keytype \rightarrow \Effecttype_{\bottom}$                 & State buffer (of transaction)          \\
+  \acomstp                          & $\in \Timestamptype$                                                            & Commit timestamp (of transaction)     \\
+  (\atrans, \asnpsht, \areadset, \adirtyset, \astatebuf, \acomstp)
+                                    & $\in \Tdesctype = \TransactionIDtype \times \Timestamptype $                    & Transaction descriptor \\
+                                    & $\times\ \mathcal{P}(\Keytype) \times \mathcal{P}(\Keytype)
+                                      \times \Statebuftype \times \Timestamptype$                                     &  \\
+  \hline
+
+  % $\cmbegin$                         &                                                                                & Precondition for starting transaction \\
+  % $\cmcommit$                        &                                                                                & Precondition for commitment           \\
+  \atrseta,\atrsetc,\atrsetr           & $\subseteq \Tdesctype$                                                          & Aborted, committed, running transactions \\
+  $\Pi_{x}\atrset{}$                &                                                                    & Project set of transaction descriptors \atrset{} along dimension $x$ \\
+  \hline{}
+  $\astore{}, \atrsetr{},\ldots{}$   &                                                                                & Before transition                     \\
+  $\astore{}', \atrsetr{}',\ldots{}$ &                                                                                & After transition                      \\
+  ~                                 &                                                                                 &                                       \\
+\end{tabular}
+
+
+%% Local Variables:
+%% coding: utf-8
+%% mode: latex
+%% eval: (auto-fill-mode -1)
+%% ispell-local-dictionary: "en_GB"
+%% mode: flyspell
+%% TeX-master: "main" 
+%% my-latex-bibfile: "~/svnbackup/bib/shapiro-bib-ext.bib"
+%% End:

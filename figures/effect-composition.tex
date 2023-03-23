@@ -1,0 +1,45 @@
+% -*-mode: latex; coding: utf-8-unix -*-
+%
+\[
+\begin{array}{l}
+    \aeffect[\akey] \compose \aeffect[\akey']' = \aeffect[\akey']' \compose \aeffect[\akey] = \\
+      \ = \left\{
+        \begin{array}{lll}
+          \aeffect[\akey]    & \text{if}\ \aeffect[\akey']' = \bottom 		&  \text{(null effect)} \\
+          \aeffect[\akey']'  & \text{if}\ \aeffect[\akey] = \bottom 		&  \text{(null effect)} \\
+          \aeffect[\akey]    & \text{if}\ \aeffect[\akey] = \aeffect[\akey']' 	& \text{(idempotence)} \\
+          \aeffect[\akey']' \circ \aeffect[\akey]
+    %       = \aeffect[\akey] \circ \aeffect[\akey']' 
+                             & \text{if}\ \akey \neq \akey' 			& \text{(independent keys)} \\
+
+          \aeffect[\akey']' \circ \aeffect[\akey]
+                             & \text{if}\ \aeffect[\akey] \vis \aeffect[\akey']' & \text{(apply in } \vis \text{ order)} \\
+          \aeffect[\akey] \circ \aeffect[\akey']'
+                             & \text{if}\ \aeffect[\akey']' \vis \aeffect[\akey] & \text{(apply in } \vis \text{ order)} \\
+          \merge{}(\aeffect[\akey],\aeffect[\akey']')
+     %     = \merge{}(\aeffect[\akey']',\aeffect[\akey])
+                             & \text{if \merge{} def.}\
+                               \land \aeffect[\akey] \concur \aeffect[\akey']'  & \text{(merge concurrent)} \\
+ %         \ldots             & \text{and symmetrically} 			& \\
+          \text{undefined}   & \text{otherwise}                                 & \text{(error)} \\
+
+        \end{array}
+        \right.
+\end{array}
+\]
+\[
+  \begin{array}[t]{rcl}
+    (\aeffect'' \compose \aeffect') \compose \aeffect{}
+    & = & \aeffect'' \compose (\aeffect' \compose \aeffect{}) \\
+  \end{array}
+\]
+
+%% Local Variables:
+%% coding: utf-8
+%% mode: latex
+%% eval: (auto-fill-mode -1)
+%% ispell-local-dictionary: "en_GB"
+%% mode: flyspell
+%% TeX-master: "main" 
+%% my-latex-bibfile: "~/svnbackup/bib/shapiro-bib-ext.bib"
+%% End:
